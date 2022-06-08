@@ -1,0 +1,16 @@
+body {
+  background-color: #4f6d7a;
+}
+
+.container {
+  max-width: 1200px;
+  padding: 1rem;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.section__element {
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+}

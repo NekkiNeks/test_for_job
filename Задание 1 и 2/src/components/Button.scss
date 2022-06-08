@@ -1,0 +1,104 @@
+$white: #fbf5f3;
+$grey: #ccc6c4;
+$orange: #e28413;
+$darkOrange: #b96d0f;
+$red: #de3c4b;
+$darkRed: #b42f3c;
+$green: #698f3f;
+$darkGreen: #577734;
+
+.button {
+  font-family: inherit;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  width: 300px;
+  border: none;
+  border-radius: 5px;
+  background-color: $white;
+}
+
+.button__disabled {
+  color: #333;
+}
+
+.button__type_danger {
+  $color: $red;
+  background-color: $color;
+  border-color: $color;
+
+  &:hover {
+    $color: $darkRed;
+    background-color: $color;
+    border-color: $color;
+  }
+}
+
+.button__type_success {
+  $color: $green;
+  background-color: $color;
+  border: $color;
+
+  &:hover {
+    $color: $darkGreen;
+    background-color: $color;
+    border-color: $color;
+  }
+}
+
+.button__type_warning {
+  $color: $orange;
+  background-color: $color;
+  border: $color;
+
+  &:hover {
+    $color: $darkOrange;
+    background-color: $color;
+    border-color: $color;
+  }
+}
+
+.button__type_primary {
+  $color: $white;
+  background-color: $color;
+  border-color: $color;
+
+  &:hover {
+    $color: $grey;
+    background-color: $color;
+    border-color: $color;
+  }
+}
+
+.button__min {
+  width: 200px;
+}
+
+.button__large {
+  width: 400px;
+}
+
+.button__block {
+  width: 100%;
+}
+
+.button__outlined {
+  background-color: transparent !important;
+  border-width: 3px;
+  border-style: solid;
+}
+
+.button__text {
+  background-color: transparent;
+  border: none;
+}
+
+.button__text:hover {
+  background-color: $white;
+}
+
+.button__icon {
+  padding: 0.5rem;
+}

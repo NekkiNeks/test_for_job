@@ -1,0 +1,50 @@
+$white: #fbf5f3;
+$grey: #d6cfcd;
+
+.list {
+  background-color: $white;
+  position: relative;
+  width: 300px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.list__block {
+  width: 100%;
+}
+
+.list__opened {
+  background-color: $grey;
+}
+
+.list-header {
+  display: flex;
+}
+
+.list-header__title {
+  font-size: 20px;
+  padding: 1rem;
+  width: 100%;
+  margin: 0;
+}
+
+.list-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background-color: $white;
+  position: absolute;
+  width: 100%;
+  border-radius: 5px;
+  box-shadow: 4px 4px 18px 0px rgba(34, 60, 80, 0.2);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.list-items__item {
+  padding: 1rem;
+
+  &:hover {
+    background-color: $grey;
+  }
+}
