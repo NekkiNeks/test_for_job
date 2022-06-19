@@ -4,76 +4,88 @@ import React from "react";
 import type { RootState } from "../store/store";
 import { useAppDispatch } from "../store/hooks";
 import { useSelector } from "react-redux";
-import {
-  updateBody,
-  updateTitle,
-  defaultState,
-} from "../store/slices/modalSlice";
+import { updateShow, updateState } from "../store/slices/modalSlice";
 import { updatePost } from "../store/slices/postsSlice";
 
-export default function Modal() {
-  const { title, id, body } = useSelector((state: RootState) => state.modal);
-  const dispatch = useAppDispatch();
+//import types
+import type { IPopupOptions } from "devextreme-react/popup";
+import type { FieldDataChangedEvent } from "devextreme/ui/form";
 
-  function handleSubmit(e: React.FormEvent) {
+//devExtreme
+import notify from "devextreme/ui/notify";
+import { Popup } from "devextreme-react/popup";
+import TextArea from "devextreme/ui/text_area";
+import Form, {
+  ButtonItem,
+  GroupItem,
+  SimpleItem,
+  Label,
+  RequiredRule,
+} from "devextreme-react/form";
+
+//types
+interface iProps extends IPopupOptions {}
+
+export default function NewModal(props: iProps) {
+  const dispatch = useAppDispatch();
+  const { body, title, id } = useSelector((state: RootState) => state.modal);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (title !== "" && id !== null && body !== "") {
-      dispatch(updatePost({ body, title, id }));
-      dispatch(defaultState());
+    if (id) {
+      dispatch(updatePost({ title, body, id }));
+      dispatch(updateShow({ show: false }));
+      notify("Post was changed!", "success");
     } else {
-      alert("Введите текст");
+      notify("Error, no id!", "danger");
     }
   }
 
-  function handleReset() {
-    dispatch(defaultState());
+  function handleChange(e: FieldDataChangedEvent) {
+    dispatch(updateState({ state: e.component.option("formData") }));
   }
 
   return (
-    <div
-      onClick={handleReset}
-      className="fixed top-0 left-0 right-0 h-screen w-screen  z-10 bg-neutral-500/50 flex justify-center items-center "
-    >
+    <Popup {...props}>
       <form
-        onClick={(e) => e.stopPropagation()}
-        onSubmit={handleSubmit}
-        onReset={handleReset}
-        className="flex flex-col bg-white p-5 rounded-xl w-1/2"
+        onSubmit={(e) => {
+          handleSubmit(e);
+        }}
       >
-        <label htmlFor="title" className="text-lg">
-          Title:
-        </label>
-        <input
-          type="text"
-          name="title"
-          value={title}
-          onChange={(e) => dispatch(updateTitle({ title: e.target.value }))}
-          className="bg-slate-50 p-2 mb-5 rounded"
-        />
-        <label htmlFor="body" className="text-lg">
-          Body:
-        </label>
-        <textarea
-          name="body"
-          value={body}
-          onChange={(e) => dispatch(updateBody({ body: e.target.value }))}
-          className="bg-slate-50 h-56 p-2 mb-5 resize-none rounded focus:outline-0"
-        />
-        <div className="flex space-x-5 justify-center">
-          <button
-            type="submit"
-            className="bg-sky-400 text-white p-2 rounded hover:bg-sky-500"
+        <Form
+          formData={{ body, title }}
+          onFieldDataChanged={(e) => handleChange(e)}
+        >
+          <SimpleItem dataField="title" editorType="dxTextBox">
+            <RequiredRule message="Title is required" />
+          </SimpleItem>
+          <SimpleItem
+            dataField="body"
+            editorType={TextArea}
+            editorOptions={{ autoResizeEnabled: true }}
           >
-            Сохранить
-          </button>
-          <button
-            type="reset"
-            className="bg-red-400 text-white p-2 rounded hover:bg-red-500"
-          >
-            Отменить
-          </button>
-        </div>
+            <Label text={"Text"} />
+            <RequiredRule message="Text is required" />
+          </SimpleItem>
+          <GroupItem>
+            <ButtonItem
+              buttonOptions={{
+                text: "Change",
+                type: "success",
+                useSubmitBehavior: true,
+              }}
+            />
+            <ButtonItem
+              buttonOptions={{
+                text: "Cancel",
+                type: "danger",
+                useSubmitBehavior: false,
+                onClick: () => dispatch(updateShow({ show: false })),
+              }}
+            />
+          </GroupItem>
+        </Form>
       </form>
-    </div>
+    </Popup>
   );
 }

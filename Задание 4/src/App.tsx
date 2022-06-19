@@ -13,7 +13,7 @@ import { updateShow, defaultState } from "./store/slices/modalSlice";
 
 //components
 import Post from "./components/Post";
-import NewModal from "./components/NewModal";
+import Modal from "./components/Modal";
 
 function App() {
   const { posts, loading, error, errorMessage } = useSelector(
@@ -47,7 +47,7 @@ function App() {
   } else {
     return (
       <div className="w-3/4 m-auto p-5">
-        <NewModal
+        <Modal
           visible={show}
           onHiding={() => dispatch(updateShow({ show: false }))}
           onHidden={() => dispatch(defaultState())}
